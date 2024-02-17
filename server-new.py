@@ -1,10 +1,6 @@
 import json
-import os
-import pickle
 import random
 import smtplib
-import socket
-import threading
 from datetime import date
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
@@ -246,7 +242,7 @@ def get_tickets():
     # Fügen Sie den Text zur E-Mail hinzu
     body = (f'Hallo und Herzlich Willkommen {name}!\n\n'
             "Im Anhang befindet sich deine Digitale Zugangskarte, die noch nicht funktioniert!\n"
-            "Um dein Ticket zu aktivieren, musst du dich bei der Raiffeisen Bank in Sattledt, oder am Tag der Veranstalltung am Eingan melden.\n\n"
+            "Um dein Ticket zu aktivieren, musst du dich am Tag der Veranstalltung am Eingan melden.\n\n"
             "Mithilfe des QRCodes, der sich in Anhang befindet, kannst du den Saal betreten. "
             "Wir wünschen dir viel spaß bei der Vorstellung!")
     msg.attach(MIMEText(body, 'plain'))
