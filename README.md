@@ -54,7 +54,7 @@ We invite contributions to make Qr-Gate even more robust! Feel free to open issu
 
 ## Support 📧
 
-For any questions or assistance, please contact Red_Wolf2467 at [redwolf2467@example.com](mailto:redwolf2467@example.com).
+For any questions or assistance, please contact Red_Wolf2467 at [redwolf2467@pyropixle.com](mailto:redwolf2467@pyropixle.com).
 
 ## License 📄
 
