@@ -30,15 +30,12 @@ Qr-Gate, crafted by the developer Red_Wolf2467, is a comprehensive system design
    npm install
    ```
 
-3. **Configuration:**
-   Customize the settings in `config.js` to match your requirements.
-
-4. **Run the Application:**
+3. **Run the Application:**
    ```bash
    npm start
    ```
 
-5. **Access the Dashboard:**
+4. **Access the Dashboard:**
    Open your browser and go to [http://localhost:1612](http://localhost:1612).
 
 ## Contributing 🤝
