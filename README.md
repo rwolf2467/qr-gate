@@ -1,21 +1,27 @@
 # Qr-Gate: Ticket Access System 🎟️
 
-Welcome to Qr-Gate, the all-in-one solution for efficient ticket access management! 🚀
+Welcome to Qr-Gate, your ultimate solution for streamlined ticket access management! 🚀
 
 ## About Qr-Gate
 
-Qr-Gate, crafted by the developer Red_Wolf2467, is a comprehensive system designed to revolutionize ticket access. With features like an online ticket shop, a handheld app for scanning and validating tickets, and a powerful admin panel for seamless ticket management, Qr-Gate ensures a smooth and secure entry experience. Please note, however, that the system is still under development and there is no guarantee of safety and functionality!
+Qr-Gate, a collaborative masterpiece led by the developer Red_Wolf2467 and skillfully crafted by the talented WebDev beast_gaming_, redefines the ticket access experience. Boasting an intuitive online ticket shop, a mobile-friendly app for seamless ticket scanning, and a robust admin panel, Qr-Gate ensures a hassle-free and secure entry process.
 
 ## Features 🌟
 
-- **Online Ticket Shop:** Easily purchase tickets online with our user-friendly ticket shop.
-- **Handheld App:** Use the handheld app to scan and validate tickets on the go.
-- **Admin Panel:** Efficiently manage, create, and view tickets through the powerful admin panel.
+- **Online Ticket Shop:** Effortlessly purchase tickets online with our user-friendly interface.
+- **Handheld App:** Quickly scan and validate tickets on the go with our mobile app.
+- **Admin Panel:** Efficiently manage, create, and view tickets through the powerful admin interface.
 
 ## Planned Features 🚧
 
-- **Easy Shop Control in Admin Panel:** Streamline shop management with a user-friendly interface in the admin panel.
-- **Statistics:** Gain insights into ticket sales, usage, and other valuable data.
+- **Intuitive Shop Control in Admin Panel:** Easily customize and control the ticket shop with a user-friendly interface.
+- **Comprehensive Statistics:** Gain valuable insights into ticket sales, usage, and more.
+- **Online Payments with Stripe:** Enable secure online transactions for ticket purchases through the integration of Stripe.
+
+## Meet the Developers 👩‍💻👨‍💻
+
+- **Lead Developer:** Red_Wolf2467
+- **Web Developer (HTML, CSS, PHP):** beast_gaming_
 
 ## Getting Started 🚀
 
@@ -38,18 +44,22 @@ Qr-Gate, crafted by the developer Red_Wolf2467, is a comprehensive system design
 4. **Access the Dashboard:**
    Open your browser and go to [http://localhost:1612](http://localhost:1612).
 
+## Please Note 🛑
+
+Please note, however, that the system is still under development, and there is no guarantee of safety and functionality! Use it at your own discretion.
+
 ## Contributing 🤝
 
 We invite contributions to make Qr-Gate even more robust! Feel free to open issues, submit pull requests, or provide feedback.
 
 ## Support 📧
 
-For any questions or assistance, please contact Red_Wolf2467 at [redwolf2467@pyropixle.com](mailto:redwolf2467@pyropixle.com) or on Discord [https://link.pyropixle.com/discord](https://link.pyropixle.com/discord).
+For any questions or assistance, please contact Red_Wolf2467 at [redwolf2467@pyropixle.com](mailto:redwolf2467@pyropixle.com).
 
-## Meet the Developers 👩‍💻👨‍💻
-- **Lead Developer:** Red_Wolf2467
-- **Web Developer (HTML, CSS):** beast_gaming_
+## License 📄
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-Thank you for choosing Qr-Gate! 🎉 Elevate your ticket access experience with our innovative features.
+Thank you for choosing Qr-Gate! 🎉 Elevate your ticket access experience with our innovative features, including secure online payments with Stripe.
