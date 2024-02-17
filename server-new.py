@@ -21,6 +21,7 @@ password_data = {
 print("Starting QR-Gate Server...")
 print(f"Boot: {date.today()}")
 
+
 app = Flask(__name__, static_folder="static", template_folder="web")
 app.secret_key = "PASSWORD"
 
@@ -29,6 +30,9 @@ smtp_port = 587  # Port für SMTP-Server
 smtp_username = 'qrgate@pyropixle.com'
 smtp_password = 'PASSWORD'
 sender_email = 'qrgate@pyropixle.com'
+version = "1.2"
+
+print(f"Server Version: {version}")
 
 def read_codes():
     try:
@@ -111,7 +115,7 @@ def check_password():
     else:
         return jsonify({"success": False}), 401
 
-@app.route('/API/admin_panel')
+@app.route('/app/admin-panel')
 def ticket_setup():
     return render_template('admin-panel.html', data=password_data)
 
@@ -121,13 +125,9 @@ def home():
 
 @app.route("/API/ping")
 def pingAPI():
-    return render_template("index.html")
+    return f"<p>Server is up and running</p> <br> <p> QR-Gate Server Version:  {version}</p>"
 
 @app.route("/app/handheld")
-def handheldchoose():
-    return render_template("handheld-choose.html")
-
-@app.route("/app/handheldv1")
 def admin_handheld():
     return render_template("handheld.html")
 
@@ -158,6 +158,8 @@ def ticket_info():
         bezahlt = code_json[str(code)]["payed"]
         email = code_json[str(code)]["email"]
         preis = int(usercount) * 13
+        last_used = code_json[str(code)]["last-used"]
+        last_payed = code_json[str(code)]["last-payed"]
         return jsonify({"success": True, "message": "Ticket exists!",
                         'nummer': code,
                         'name': name,
@@ -166,7 +168,9 @@ def ticket_info():
                         'usercount': usercount,
                         'used': used,
                         'bezahlt': bezahlt,
-                        'preis': preis
+                        'preis': preis,
+                        'last_used': last_used,
+                        'last_payed': last_payed
                         })
     else:
         return jsonify({"success": False, "message": "Ticket does not exist!"})
@@ -206,6 +210,18 @@ def handheldcheck():
         data = {"success": False, "message": "Ticket does not exist"}
         print(data)
         return jsonify(data), 500
+
+@app.route("/API/create_ticket", methods=["POST"])
+def create_ticket():
+    code=read_codes()
+    ticket_code = request.form.get("code")
+    if ticket_code is not None:
+        ticket_number = random.randint(1000, 9999)
+        while ticket_number in code:
+            ticket_number = random.randint(1000, 9999)
+    personcount = request.form.get("personcount")
+    valid_date = date.today()
+
 
 
 @app.route("/API/get_tickets", methods=["POST"])
