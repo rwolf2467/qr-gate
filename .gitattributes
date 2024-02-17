@@ -1,2 +1,1 @@
-*.css linguist-language=Python
-*.scss linguist-detectable=false
+*.scss linguist-language=Python
