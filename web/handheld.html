@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR-Gate Management Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/qrcode.min.js"></script>
+    <style>
+        #bd1 {
+            color: black;
+            background: #4e4a4a solid;
+        }
+        a:hover {
+            background-color: darkorange;
+        }
+        #bd2{
+            display: none;
+        }
+    </style>
+</head>
+
+    <div class="font-sans bg-gray-100 text-black" id="bd1">
+    <h1 class="text-4xl text-center mt-8">QR-Gate Management Panel</h1>
+    <div class="container mx-auto flex justify-center mt-8">
+        <div class="panel bg-black text-white rounded-lg p-6 m-4 w-80">
+            <button id="fullscreenButton">Enter Fullscreen</button>
+            <h3 class="text-xl mb-4">QrGate Handheld App</h3>
+            <a><div style="border-radius: 10px; background-color: orange; padding: 10px; margin: 10px" onclick="change()"><p style="font-family: 'Arial Black'">Qr-Gate Handheld v1</p></div></a>
+        </div>
+
+
+    </div>
+    </div>
+
+    <div class="container mx-auto py-10" id="bd2">
+        <h1 class="text-3xl font-semibold text-center mb-8">Scan QR Code</h1>
+        <button id="fullscreenButton">Enter Fullscreen</button>
+        <div class="flex justify-center">
+            <div id="my-qr-reader" class="w-96 h-96 border"></div>
+        </div>
+
+        <div id="your-qr-result" class="mt-8 text-center"></div>
+    </div>
+
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
+
+
+
+</body>
+
+</html>
+
+<script>
+
+    function change(){
+        document.getElementById("bd2").style.display = "block";
+        document.getElementById("bd1").style.display = "none";
+    }
+    const fullscreenButton = document.getElementById('fullscreenButton');
+
+    fullscreenButton.addEventListener('click', () => {
+    if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+    } else if (document.documentElement.webkitRequestFullscreen) {
+        document.documentElement.webkitRequestFullscreen(); // for Safari
+    } else if (document.documentElement.msRequestFullscreen) {
+        document.documentElement.msRequestFullscreen(); // for Internet Explorer
+    }
+    });
+
+    document.addEventListener('fullscreenchange', () => {
+    if (document.fullscreenElement) {
+        fullscreenButton.innerHTML = 'Exit Fullscreen';
+    } else {
+        fullscreenButton.innerHTML = 'Enter Fullscreen';
+    }
+    });
+
+    function domReady(fn){
+            if(document.readyState === "complete" || document.readyState === "interactive"){
+                setTimeout(fn,1)
+            }else{
+                document.addEventListener("DOMContentLoaded", fn)
+            }
+        }
+
+        domReady(function(){
+            var myqr = document.getElementById('your-qr-result');
+            var lastResult, countResults = 0;
+
+            function onScanSuccess(decodeText, decodeResult){
+                if(decodeText !== lastResult){
+                    ++countResults;
+                    lastResult = decodeText;
+
+                    fetch('/API/handheld/check', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ result: decodeText })
+                    })
+                    .then(response => response.json())
+                    .then(data => console.log(data))
+                    .catch(error => alert('Error:', error));
+
+                    myqr.innerHTML = `You scanned ${countResults}: ${decodeText}`;
+                }
+            }
+
+            var htmlScanner = new Html5QrcodeScanner(
+                "my-qr-reader",{ fps: 10, qrbox: 250 });
+
+            htmlScanner.render(onScanSuccess);
+        });
+</script>
