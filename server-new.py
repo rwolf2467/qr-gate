@@ -213,15 +213,33 @@ def handheldcheck():
 
 @app.route("/API/create_ticket", methods=["POST"])
 def create_ticket():
-    code=read_codes()
-    ticket_code = request.form.get("code")
-    if ticket_code is not None:
-        ticket_number = random.randint(1000, 9999)
-        while ticket_number in code:
+    try:
+        code=read_codes()
+        ticket_code = request.form.get("code")
+        if ticket_code is not None:
             ticket_number = random.randint(1000, 9999)
-    personcount = request.form.get("personcount")
-    valid_date = date.today()
+            while ticket_number in code:
+                ticket_number = random.randint(1000, 9999)
+        personcount = request.form.get("personcount")
+        valid_date = date.today()
+        email = request.form.get("email")
 
+        code[ticket_number] = {"name": None,
+                               "email": email,
+                               "user_count": personcount,
+                               "valid-date": date,
+                               "used": False,
+                               "payed": False,
+                               "last-used": None,
+                               "last-payed": date.today()}
+        write_codes(code)
+
+        ticket_image_path = generate_ticket(ticket_number)
+        data = {"success": True, "message": "Ticket was created and activated successfully!"}
+        return jsonify(data), 200
+    except Exception as e:
+        data = {"success": False, "message": f"ERROR: {e}"}
+        return jsonify(data), 500
 
 
 @app.route("/API/get_tickets", methods=["POST"])
