@@ -27,12 +27,12 @@ Qr-Gate, crafted by the developer Red_Wolf2467, is a comprehensive system design
 2. **Installation:**
    ```bash
    cd Qr-Gate
-   npm install
+   pip install -r requirements.txt
    ```
 
 3. **Run the Application:**
    ```bash
-   npm start
+   python server-new.py
    ```
 
 4. **Access the Dashboard:**
