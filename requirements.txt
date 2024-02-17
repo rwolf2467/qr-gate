@@ -1,0 +1,4 @@
+qrcode
+django-qrcode
+pillow
+Flask
