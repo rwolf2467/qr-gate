@@ -46,6 +46,9 @@ We invite contributions to make Qr-Gate even more robust! Feel free to open issu
 
 For any questions or assistance, please contact Red_Wolf2467 at [redwolf2467@pyropixle.com](mailto:redwolf2467@pyropixle.com) or on Discord [https://link.pyropixle.com/discord](https://link.pyropixle.com/discord).
 
+## Meet the Developers 👩‍💻👨‍💻
+- **Lead Developer:** Red_Wolf2467
+- **Web Developer (HTML, CSS):** beast_gaming_
 
 ---
 
