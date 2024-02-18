@@ -26,6 +26,7 @@ def write_shopbarrier_status(status):
     with open(shopbarrier_file_path, 'w') as file:
         file.write(str(status))
 
+
 password_data = {
     "2467": "TestUser1",
     "3648": "TestUser2",
@@ -35,18 +36,28 @@ password_data = {
 print("Starting QR-Gate Server...")
 print(f"Boot: {date.today()}")
 
-
 app = Flask(__name__, static_folder="static", template_folder="web")
 app.secret_key = "PASSWORD"
 
-smtp_server = 'smtppro.zoho.eu'
-smtp_port = 587  # Port für SMTP-Server
-smtp_username = 'qrgate@pyropixle.com'
-smtp_password = 'PASSWORD'
-sender_email = 'qrgate@pyropixle.com'
+
+def read_config():
+    try:
+        with open("static/data/config.qrconf", 'r') as file:
+            config_data = json.load(file)
+        return config_data
+    except FileNotFoundError:
+        return 0
+
+
+smtp_server = read_config()["email_smtp_server"]
+smtp_port = read_config()["email_smtp_port"]  # Port für SMTP-Server
+smtp_username = read_config()["email_smtp_username"]
+smtp_password = read_config()["email_smtp_password"]
+sender_email = read_config()["email_smtp_username"]
 version = "1.2"
 
 print(f"Server Version: {version}")
+
 
 def read_codes():
     try:
@@ -56,9 +67,11 @@ def read_codes():
     except FileNotFoundError:
         return {}
 
+
 def write_codes(codes_data):
     with open("codes.json", "w") as file:
         json.dump(codes_data, file)
+
 
 def generate_ticket(ticket_number):
     size = 600  # Größe des Bildes
@@ -129,17 +142,25 @@ def check_password():
     else:
         return jsonify({"success": False}), 401
 
+
 @app.route('/app/admin-panel')
 def ticket_setup():
     return render_template('admin-panel.html', data=password_data)
 
+
 @app.route("/")
 def home():
-    return render_template("index.html")
+    with open("static/data/config.qrconf", "r") as config_file:
+        config = json.load(config_file)
+
+        # Render das Template und übergebe die Werte aus der JSON-Datei
+    return render_template('index.html', config=config)
+
 
 @app.route("/API/ping")
 def pingAPI():
     return f"<p>Server is up and running</p> <br> <p> QR-Gate Server Version:  {version}</p>"
+
 
 @app.route("/app/handheld")
 def admin_handheld():
@@ -151,6 +172,7 @@ def get_shopbarrier_status():
     status = read_shopbarrier_status()
     return jsonify({'value': status})
 
+
 @app.route('/API/shopbarrier_set', methods=['POST'])
 def set_shopbarrier_status():
     data = request.json
@@ -160,6 +182,7 @@ def set_shopbarrier_status():
         return jsonify({'message': 'Shopbarrier status updated successfully'})
     else:
         return jsonify({'error': 'Invalid value provided'}), 400
+
 
 @app.route("/API/enable_ticket", methods=['POST'])
 def enable_ticket():
@@ -174,6 +197,7 @@ def enable_ticket():
             return jsonify({"success": True, "message": "Successfully marked as payed"}), 200
         else:
             return jsonify({"success": False, "message": "Already Marked as Payed"}), 200
+
 
 @app.route("/API/Ticket_info", methods=['POST'])
 def ticket_info():
@@ -203,6 +227,7 @@ def ticket_info():
                         })
     else:
         return jsonify({"success": False, "message": "Ticket does not exist!"})
+
 
 @app.route("/API/handheld/check", methods=["POST"])
 def handheldcheck():
@@ -240,10 +265,11 @@ def handheldcheck():
         print(data)
         return jsonify(data), 500
 
+
 @app.route("/API/create_ticket", methods=["POST"])
 def create_ticket():
     try:
-        code=read_codes()
+        code = read_codes()
         ticket_code = request.form.get("code")
         if ticket_code is not None:
             ticket_number = random.randint(1000, 9999)
@@ -332,5 +358,5 @@ def get_tickets():
 if __name__ == '__main__':
     # Starten Sie die Flask-App in einem Thread
     context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
-    context.load_cert_chain('certificate.crt', 'private.key') #app.app/server.app/
+    context.load_cert_chain('certificate.crt', 'private.key')  # app.app/server.app/
     app.run(host='0.0.0.0', port=1612, ssl_context=context, debug=False)
