@@ -35,13 +35,18 @@ Qr-Gate, a collaborative masterpiece led by the developer Red_Wolf2467 and skill
    cd Qr-Gate
    pip install -r requirements.txt
    ```
+   
+3. **Run the Setup:**
+   ```bash
+   python setup.py
+   ```
 
-3. **Run the Application:**
+4. **Run the Application:**
    ```bash
    python server-new.py
    ```
 
-4. **Access the Dashboard:**
+5. **Access the Dashboard:**
    Open your browser and go to [http://localhost:1612](http://localhost:1612).
 
 ## Please Note 🛑
