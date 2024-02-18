@@ -47,6 +47,12 @@ Qr-Gate, a collaborative masterpiece led by the developer Red_Wolf2467 and skill
 ## Please Note 🛑
 
 Please note, however, that the system is still under development, and there is no guarantee of safety and functionality! Use it at your own discretion.
+| Version | Supported          |
+| ------- | ------------------ |
+| 3.12    | :white_check_mark: |
+| 3.11.8  | :white_check_mark: |
+| 3.10.x  | :x:                |
+| < 3.9   | :x:                |
 
 ## Contributing 🤝
 
