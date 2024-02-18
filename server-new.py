@@ -1,7 +1,7 @@
 import json
 import random
 import smtplib
-from datetime import date
+from datetime import date, datetime, timedelta
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -183,6 +183,35 @@ def set_shopbarrier_status():
     else:
         return jsonify({'error': 'Invalid value provided'}), 400
 
+@app.route('/API/dates_set', methods=['POST'])
+def set_event_dates():
+    data = request.get_json()
+
+    if not data or 'startDate' not in data or 'endDate' not in data:
+        return jsonify({'error': 'Start date and end date are required.'}), 400
+
+    try:
+        start_date = datetime.strptime(data['startDate'], '%Y-%m-%d')
+        end_date = datetime.strptime(data['endDate'], '%Y-%m-%d')
+    except ValueError:
+        return jsonify({'error': 'Invalid date format. Please provide dates in YYYY-MM-DD format.'}), 400
+
+    all_dates = get_dates_in_range(start_date, end_date)
+
+    file_path = './static/data/eventdates.qrconf'
+    with open(file_path, 'w') as file:
+        for date in all_dates:
+            file.write(f'{date.strftime("%Y-%m-%d")}\n')
+
+    return jsonify({'message': 'Dates saved successfully.'}), 200
+
+def get_dates_in_range(start_date, end_date):
+    dates = []
+    current_date = start_date
+    while current_date <= end_date:
+        dates.append(current_date)
+        current_date += timedelta(days=1)
+    return dates
 
 @app.route("/API/enable_ticket", methods=['POST'])
 def enable_ticket():
