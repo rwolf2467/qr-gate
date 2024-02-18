@@ -10,12 +10,11 @@
     <style>
         body {
             color: black;
-            background-color: #4e4a4a;
         }
     </style>
 </head>
 
-<body class="font-sans bg-gray-100 text-black">
+<body class="font-sans bg-gray-100 text-black" onload="loadCheckboxState()">
     <h1 class="text-4xl text-center mt-8">QR-Gate Management Panel</h1>
     <div class="container mx-auto flex justify-center mt-8">
         <div class="panel bg-black text-white rounded-lg p-6 m-4 w-80">
@@ -44,12 +43,15 @@
             <label for="email">Email (Optional):</label>
             <input type="email" placeholder="(Optional) Email..." id="email"
                 class="w-full px-4 py-2 mb-2 rounded border border-gray-400"><br>
-            <label for="gültigkeitsdatum">Gültigkeitsdatum:</label>
-            <input type="date" id="gültigkeitsdatum" required
+            <label for="gÃ¼ltigkeitsdatum">GÃ¼ltigkeitsdatum:</label>
+            <input type="date" id="gÃ¼ltigkeitsdatum" required
                 class="w-full px-4 py-2 mb-2 rounded border border-gray-400 text-black">
             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
         </div>
     </div>
+
+<label for="checkbox">Checkbox:</label>
+<input type="checkbox" id="checkbox">
 
     <script>
         function submitTicketInfo() {
@@ -75,10 +77,10 @@
                 })
                 .then(data => {
                     console.log('Success:', data);
-                    var outputText = "Ticket Nummer: " + data.nummer + "\n" +
+                     var outputText = "Ticket Nummer: " + data.nummer + "\n" +
                         ".....................................\n" +
                         "Name: " + data.name + "\n" +
-                        "E-Mail: " + data.email + "\n" + 
+                        "E-Mail: " + data.email + "\n" +
                         "Datum: " + data.datum + "\n" +
                         "Usercount: " + data.usercount + "\n" +
                         "Used: " + data.used + "\n" +
@@ -146,6 +148,43 @@
             });
     }
     </script>
-</body>
+    <script>
+function loadCheckboxState() {
+    fetch('/API/shopbarrier_get')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch shopbarrier status');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const checkbox = document.getElementById('checkbox');
+            checkbox.checked = data.value === 1;
+        })
+        .catch(error => {
+            alert('Error: ' + error.message);
+        });
+}
 
-</html>
+const checkbox = document.getElementById('checkbox');
+checkbox.addEventListener('change', function() {
+    let valueToSend = this.checked ? 1 : 0;
+
+    fetch('/API/shopbarrier_set', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ value: valueToSend })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to update shopbarrier status');
+        }
+        return response.json();
+    })
+    .then(data => console.log(data))
+    .catch(error => alert('Error: ' + error.message));
+});
+</script>
+</body>

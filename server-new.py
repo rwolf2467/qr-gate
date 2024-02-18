@@ -11,6 +11,20 @@ from PIL import Image, ImageDraw, ImageFont
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 import ssl
 
+shopbarrier_file_path = './static/data/shopbarrier.qrconf'
+
+
+def read_shopbarrier_status():
+    try:
+        with open(shopbarrier_file_path, 'r') as file:
+            return int(file.read().strip())
+    except FileNotFoundError:
+        return 0
+
+
+def write_shopbarrier_status(status):
+    with open(shopbarrier_file_path, 'w') as file:
+        file.write(str(status))
 
 password_data = {
     "2467": "TestUser1",
@@ -131,6 +145,21 @@ def pingAPI():
 def admin_handheld():
     return render_template("handheld.html")
 
+
+@app.route('/API/shopbarrier_get', methods=['GET'])
+def get_shopbarrier_status():
+    status = read_shopbarrier_status()
+    return jsonify({'value': status})
+
+@app.route('/API/shopbarrier_set', methods=['POST'])
+def set_shopbarrier_status():
+    data = request.json
+    value = data.get('value')
+    if value is not None and isinstance(value, int):
+        write_shopbarrier_status(value)
+        return jsonify({'message': 'Shopbarrier status updated successfully'})
+    else:
+        return jsonify({'error': 'Invalid value provided'}), 400
 
 @app.route("/API/enable_ticket", methods=['POST'])
 def enable_ticket():
