@@ -20,8 +20,8 @@ Qr-Gate, a collaborative masterpiece led by the developer Red_Wolf2467 and skill
 
 ## Meet the Developers 👩‍💻👨‍💻
 
-- **Lead Developer:** Red_Wolf2467
-- **Web Developer (HTML, CSS, PHP):** beast_gaming_
+- **Lead Developer:** [Red_Wolf2467](https://github.com/rwolf2467)
+- **Web Developer (HTML, CSS, PHP):** [Matti Krebelder](https://github.com/Matti-Krebelder)
 
 ## Getting Started 🚀
 
