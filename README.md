@@ -4,7 +4,7 @@ Welcome to Qr-Gate, your ultimate solution for streamlined ticket access managem
 
 ## About Qr-Gate
 
-Qr-Gate, a collaborative masterpiece led by the developer Red_Wolf2467 and skillfully crafted by the talented WebDev beast_gaming_, redefines the ticket access experience. Boasting an intuitive online ticket shop, a mobile-friendly app for seamless ticket scanning, and a robust admin panel, Qr-Gate ensures a hassle-free and secure entry process.
+Qr-Gate, a collaborative masterpiece led by the developer Red_Wolf2467 and skillfully crafted by the talented WebDev Matti, redefines the ticket access experience. Boasting an intuitive online ticket shop, a mobile-friendly app for seamless ticket scanning, and a robust admin panel, Qr-Gate ensures a hassle-free and secure entry process.
 
 ## Features 🌟
 
