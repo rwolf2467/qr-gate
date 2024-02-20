@@ -36,10 +36,6 @@ password_data = {
 print("Starting QR-Gate Server...")
 print(f"Boot: {date.today()}")
 
-app = Flask(__name__, static_folder="static", template_folder="web")
-app.secret_key = "PASSWORD"
-
-
 def read_config():
     try:
         with open("static/data/config.qrconf", 'r') as file:
@@ -47,6 +43,12 @@ def read_config():
         return config_data
     except FileNotFoundError:
         return 0
+
+app = Flask(__name__, static_folder="static", template_folder="web")
+app.secret_key = read_config()['app_secret']
+
+
+
 
 
 smtp_server = read_config()["email_smtp_server"]

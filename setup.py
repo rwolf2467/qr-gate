@@ -2,6 +2,7 @@ import json
 
 print("Welcome to the Qr-Gate setup!")
 company_name = input("Please enter your Company's Name: ")
+app_secret = input("Please enter app Password: ")
 
 print(".........................................................................................")
 
@@ -17,7 +18,8 @@ data = {
     "email_smtp_server": email_smtp_server,
     "email_smtp_username": email_smtp_username,
     "email_smtp_password": email_smtp_password,
-    "email_smtp_port": email_smtp_port
+    "email_smtp_port": email_smtp_port,
+    "app_secret": app_secret
 }
 
 # Öffne die Datei im Schreibmodus und schreibe die JSON-Daten
