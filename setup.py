@@ -17,7 +17,7 @@ print(".........................................................................
 print(">> STRIPE PAYMENT SETUP <<")
 
 stripe_api_skey = input("Please enter your Stripe Secret KEY: ")
-stripe_api_pkey = input("Please enter your Stripe Private KEY: ")
+stripe_api_pkey = input("Please enter your Stripe Public KEY: ")
 
 print(".........................................................................................")
 print(">> 1st ADMIN USER SETUP <<")
