@@ -4,6 +4,7 @@ print("Welcome to the Qr-Gate setup!")
 print(">> BASIC INFO <<")
 company_name = input("Please enter your Company's Name: ")
 app_secret = input("Please enter app Password: ")
+t_price = input("Please enter the Ticket Price: ")
 
 print(".........................................................................................")
 print(">> EMAIL SETUP <<")
@@ -37,7 +38,8 @@ data = {
     "stripe_api_skey": stripe_api_skey,
     "stripe_api_pkey": stripe_api_pkey,
     "admin_agent": admin_agentnummer,
-    "admin_agentname": admin_agentname
+    "admin_agentname": admin_agentname,
+    "ticket_price": t_price
 }
 
 # Öffne die Datei im Schreibmodus und schreibe die JSON-Daten
