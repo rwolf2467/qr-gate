@@ -27,11 +27,7 @@ def write_shopbarrier_status(status):
         file.write(str(status))
 
 
-password_data = {
-    "2467": "TestUser1",
-    "3648": "TestUser2",
-    "7900": "TestUser3"
-}
+
 
 print("Starting QR-Gate Server...")
 print(f"Boot: {date.today()}")
@@ -47,7 +43,11 @@ def read_config():
 app = Flask(__name__, static_folder="static", template_folder="web")
 app.secret_key = read_config()['app_secret']
 
-
+password_data = {
+    f"{read_config()['admin_agent']}": f"{read_config()['admin_agentname']}",
+    "3648": "TestUser2",
+    "7900": "TestUser3"
+}
 
 
 
