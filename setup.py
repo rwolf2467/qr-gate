@@ -11,6 +11,9 @@ email_smtp_port = input("Please enter your smtp port: ")
 email_smtp_username = input("Please enter your smtp username (EMAIL): ")
 email_smtp_password = input("Please enter your smtp password (PASSWORD TO EMAIL INBOX): ")
 
+stripe_api_skey = input("Please enter your Stripe Secret KEY: ")
+stripe_api_pkey = input("Please enter your Stripe Private KEY: ")
+
 print("Great thanks! Data is being processed...")
 
 data = {
@@ -19,7 +22,9 @@ data = {
     "email_smtp_username": email_smtp_username,
     "email_smtp_password": email_smtp_password,
     "email_smtp_port": email_smtp_port,
-    "app_secret": app_secret
+    "app_secret": app_secret,
+    "stripe_api_skey": stripe_api_skey,
+    "stripe_api_pkey": stripe_api_pkey
 }
 
 # Öffne die Datei im Schreibmodus und schreibe die JSON-Daten
