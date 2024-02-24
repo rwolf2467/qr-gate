@@ -15,10 +15,10 @@ email_smtp_username = input("Please enter your smtp username (EMAIL): ")
 email_smtp_password = input("Please enter your smtp password (PASSWORD TO EMAIL INBOX): ")
 
 print(".........................................................................................")
-print(">> STRIPE PAYMENT SETUP <<")
+#print(">> STRIPE PAYMENT SETUP <<")
 
-stripe_api_skey = input("Please enter your Stripe Secret KEY: ")
-stripe_api_pkey = input("Please enter your Stripe Public KEY: ")
+#stripe_api_skey = input("Please enter your Stripe Secret KEY: ")
+#stripe_api_pkey = input("Please enter your Stripe Public KEY: ")
 
 print(".........................................................................................")
 print(">> 1st ADMIN USER SETUP <<")
@@ -35,8 +35,8 @@ data = {
     "email_smtp_password": email_smtp_password,
     "email_smtp_port": email_smtp_port,
     "app_secret": app_secret,
-    "stripe_api_skey": stripe_api_skey,
-    "stripe_api_pkey": stripe_api_pkey,
+    #"stripe_api_skey": stripe_api_skey,
+    #"stripe_api_pkey": stripe_api_pkey,
     "admin_agent": admin_agentnummer,
     "admin_agentname": admin_agentname,
     "ticket_price": t_price
