@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR-Gate Management Panel</title>
+    <title>QR-Gate Handheld</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/qrcode.min.js"></script>
     <style>
         #bd1 {
             color: black;
-            background: #4e4a4a solid;
+            background-color: #4e4a4a;
         }
         a:hover {
             background-color: darkorange;
@@ -18,68 +18,76 @@
         #bd2{
             display: none;
         }
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border: 1px solid black;
+            z-index: 9999;
+            display: none;
+        }
     </style>
 </head>
-
+<body>
     <div class="font-sans bg-gray-100 text-black" id="bd1">
-    <h1 class="text-4xl text-center mt-8">QR-Gate Management Panel</h1>
-    <div class="container mx-auto flex justify-center mt-8">
-        <div class="panel bg-black text-white rounded-lg p-6 m-4 w-80">
-            <button id="fullscreenButton">Enter Fullscreen</button>
-            <h3 class="text-xl mb-4">QrGate Handheld App</h3>
-            <a><div style="border-radius: 10px; background-color: orange; padding: 10px; margin: 10px" onclick="change()"><p style="font-family: 'Arial Black'">Qr-Gate Handheld v1</p></div></a>
+        <h1 class="text-4xl text-center mt-8">QR-Gate Handheld</h1>
+        <div class="container mx-auto flex justify-center mt-8">
+            <div class="panel bg-black text-white rounded-lg p-6 m-4 w-80">
+                <button id="fullscreenButton">Enter Fullscreen</button>
+                <h3 class="text-xl mb-4">QrGate Handheld</h3>
+                <a><div style="border-radius: 10px; background-color: orange; padding: 10px; margin: 10px" onclick="change()"><p style="font-family: 'Arial Black'">Qr-Gate Handheld v1</p></div></a>
+            </div>
         </div>
-
-
-    </div>
     </div>
 
     <div class="container mx-auto py-10" id="bd2">
         <h1 class="text-3xl font-semibold text-center mb-8">Scan QR Code</h1>
-        <button id="fullscreenButton">Enter Fullscreen</button>
+        <button id="fullscreenButton1">Enter Fullscreen</button>
         <div class="flex justify-center">
             <div id="my-qr-reader" class="w-96 h-96 border"></div>
         </div>
-
         <div id="your-qr-result" class="mt-8 text-center"></div>
     </div>
 
+    <div id="popup" class="popup">
+        <span id="popup-message"></span>
+    </div>
+
+    <audio id="successSound" src="{{ url_for('static', filename='assets/audio/success.mp3') }}"></audio>
+    <audio id="failureSound" src="{{ url_for('static', filename='assets/audio/failure.mp3') }}"></audio>
+
     <script src="https://unpkg.com/html5-qrcode"></script>
 
+    <script>
+        function change(){
+            document.getElementById("bd2").style.display = "block";
+            document.getElementById("bd1").style.display = "none";
+        }
 
+        const fullscreenButton = document.getElementById('fullscreenButton');
 
+        fullscreenButton.addEventListener('click', () => {
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.webkitRequestFullscreen) {
+                document.documentElement.webkitRequestFullscreen(); // for Safari
+            } else if (document.documentElement.msRequestFullscreen) {
+                document.documentElement.msRequestFullscreen(); // for Internet Explorer
+            }
+        });
 
-</body>
+        document.addEventListener('fullscreenchange', () => {
+            if (document.fullscreenElement) {
+                fullscreenButton.innerHTML = 'Exit Fullscreen';
+            } else {
+                fullscreenButton.innerHTML = 'Enter Fullscreen';
+            }
+        });
 
-</html>
-
-<script>
-
-    function change(){
-        document.getElementById("bd2").style.display = "block";
-        document.getElementById("bd1").style.display = "none";
-    }
-    const fullscreenButton = document.getElementById('fullscreenButton');
-
-    fullscreenButton.addEventListener('click', () => {
-    if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen();
-    } else if (document.documentElement.webkitRequestFullscreen) {
-        document.documentElement.webkitRequestFullscreen(); // for Safari
-    } else if (document.documentElement.msRequestFullscreen) {
-        document.documentElement.msRequestFullscreen(); // for Internet Explorer
-    }
-    });
-
-    document.addEventListener('fullscreenchange', () => {
-    if (document.fullscreenElement) {
-        fullscreenButton.innerHTML = 'Exit Fullscreen';
-    } else {
-        fullscreenButton.innerHTML = 'Enter Fullscreen';
-    }
-    });
-
-    function domReady(fn){
+        function domReady(fn){
             if(document.readyState === "complete" || document.readyState === "interactive"){
                 setTimeout(fn,1)
             }else{
@@ -104,8 +112,27 @@
                         body: JSON.stringify({ result: decodeText })
                     })
                     .then(response => response.json())
-                    .then(data => console.log(data))
-                    .catch(error => alert('Error:', error));
+                    .then(data => {
+                        console.log(data);
+                        if(data.success) {
+                            document.body.style.backgroundColor = 'green';
+                            playSuccessSound();
+                        } else {
+                            document.body.style.backgroundColor = 'red';
+                            showPopup(data.message);
+                            playFailureSound();
+                        }
+                        setTimeout(function(){
+                            document.body.style.backgroundColor = 'white';
+                        }, 2000);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        document.body.style.backgroundColor = 'gray';
+                        setTimeout(function(){
+                            document.body.style.backgroundColor = 'white';
+                        }, 2000);
+                    });
 
                     myqr.innerHTML = `You scanned ${countResults}: ${decodeText}`;
                 }
@@ -116,4 +143,26 @@
 
             htmlScanner.render(onScanSuccess);
         });
-</script>
+
+        function showPopup(message) {
+            var popup = document.getElementById('popup');
+            var popupMessage = document.getElementById('popup-message');
+            popupMessage.innerText = message;
+            popup.style.display = 'block';
+            setTimeout(function(){
+                popup.style.display = 'none';
+            }, 2000);
+        }
+
+        function playSuccessSound() {
+            var successSound = document.getElementById('successSound');
+            successSound.play();
+        }
+
+        function playFailureSound() {
+            var failureSound = document.getElementById('failureSound');
+            failureSound.play();
+        }
+    </script>
+</body>
+</html>
