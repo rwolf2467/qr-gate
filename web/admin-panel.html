@@ -11,11 +11,60 @@
         body {
             color: black;
         }
+        .navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        .navbar {
+            background-color: black;
+            padding: 10px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            border-radius: 8px;
+            color: #cccccc;
+        }
     </style>
 </head>
+<nav class="navbar">
+    <ul>
+        <script src="https://cdn.lordicon.com/lordicon.js"></script>
 
+        <li>
+            <lord-icon
+                src="https://cdn.lordicon.com/ifsxxxte.json"
+                trigger="in"
+                delay="1500"
+                state="in-cog"
+                colors="primary:#e4e4e4"
+                style="width:50px;height:50px">
+            </lord-icon>
+        </li>
+        <li>
+            <h1 class="text-4xl text-center mt-8">QR-Gate Management Panel</h1>
+        </li>
+    </ul>
+</nav>
 <body class="font-sans bg-gray-100 text-black" onload="loadCheckboxState()">
-    <h1 class="text-4xl text-center mt-8">QR-Gate Management Panel</h1>
+
+    <div style="background-color: black; color: #cccccc; text-align: center; padding: 10px; margin: 10px; border-radius: 10px; display: flex; justify-content: center; align-items: center">
+        <script src="https://cdn.lordicon.com/lordicon.js"></script>
+        <lord-icon
+            src="https://cdn.lordicon.com/kgdqzapd.json"
+            trigger="in"
+            delay="1500"
+            state="in-clock"
+            colors="primary:#e4e4e4"
+            style="width:50px;height:50px">
+        </lord-icon>
+        <span id="clock"></span><script>setInterval(function(){document.getElementById("clock").innerHTML=new Date().toLocaleTimeString();},1000);</script>
+
+    </div>
+
     <div class="container mx-auto flex justify-center mt-8">
         <div class="panel bg-black text-white rounded-lg p-6 m-4 w-80">
             <h3 class="text-xl mb-4">Ticket Aktivieren</h3>
@@ -43,14 +92,14 @@
             <label for="email">Email (Optional):</label>
             <input type="email" placeholder="(Optional) Email..." id="email"
                 class="w-full px-4 py-2 mb-2 rounded border border-gray-400"><br>
-            <label for="gÃ¼ltigkeitsdatum">Gültigkeitsdatum:</label>
-            <input type="date" id="gÃ¼ltigkeitsdatum" required
+            <label for="gültigkeitsdatum">Gültigkeitsdatum:</label>
+            <input type="date" id="gültigkeitsdatum" required
                 class="w-full px-4 py-2 mb-2 rounded border border-gray-400 text-black">
             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
         </div>
     </div>
 
-<label for="checkbox">Ticket Shop Enabled: </label>
+<label for="checkbox">Ticket Shop Lock: </label>
 <input type="checkbox" id="checkbox">
 
         <form id="dateRangeForm">

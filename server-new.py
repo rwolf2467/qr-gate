@@ -1,6 +1,7 @@
 import json
 import random
 import smtplib
+import ssl
 from datetime import date, datetime, timedelta
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
@@ -8,8 +9,8 @@ from email.mime.text import MIMEText
 
 import qrcode
 from PIL import Image, ImageDraw, ImageFont
-from flask import Flask, render_template, request, redirect, url_for, jsonify
-import ssl
+from flask import Flask, render_template, request, jsonify
+from qrcode.main import QRCode
 
 shopbarrier_file_path = './static/data/shopbarrier.qrconf'
 
@@ -27,10 +28,9 @@ def write_shopbarrier_status(status):
         file.write(str(status))
 
 
-
-
 print("Starting QR-Gate Server...")
 print(f"Boot: {date.today()}")
+
 
 def read_config():
     try:
@@ -40,6 +40,7 @@ def read_config():
     except FileNotFoundError:
         return 0
 
+
 app = Flask(__name__, static_folder="static", template_folder="web")
 app.secret_key = read_config()['app_secret']
 
@@ -48,8 +49,6 @@ password_data = {
     "3648": "TestUser2",
     "7900": "TestUser3"
 }
-
-
 
 smtp_server = read_config()["email_smtp_server"]
 smtp_port = read_config()["email_smtp_port"]  # Port für SMTP-Server
@@ -104,7 +103,7 @@ def generate_ticket(ticket_number):
     draw.text((text_x, text_y), instruction_text2, fill="black", font=instruction_font)
 
     # QR-Code erstellen
-    qr = qrcode.QRCode(
+    qr = QRCode(
         version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_L,
         box_size=10,
@@ -147,7 +146,7 @@ def check_password():
 
 @app.route('/app/admin-panel')
 def ticket_setup():
-    return render_template('admin-panel.html', data=password_data)
+    return render_template('admin-panel.html', data=password_data)  # noqa
 
 
 @app.route("/")
@@ -156,17 +155,17 @@ def home():
         config = json.load(config_file)
 
         # Render das Template und übergebe die Werte aus der JSON-Datei
-    return render_template('index.html', config=config)
+    return render_template('index.html', config=config)  # noqa
 
 
 @app.route("/API/ping")
-def pingAPI():
+def pingAPI(): # noqa
     return f"<p>Server is up and running</p> <br> <p> QR-Gate Server Version:  {version}</p>"
 
 
 @app.route("/app/handheld")
 def admin_handheld():
-    return render_template("handheld.html")
+    return render_template("handheld.html")  # noqa
 
 
 @app.route('/API/shopbarrier_get', methods=['GET'])
@@ -185,6 +184,7 @@ def set_shopbarrier_status():
     else:
         return jsonify({'error': 'Invalid value provided'}), 400
 
+
 @app.route('/API/dates_set', methods=['POST'])
 def set_event_dates():
     data = request.get_json()
@@ -202,10 +202,11 @@ def set_event_dates():
 
     file_path = './static/data/eventdates.qrconf'
     with open(file_path, 'w') as file:
-        for date in all_dates:
+        for date in all_dates: # noqa
             file.write(f'{date.strftime("%Y-%m-%d")}\n')
 
     return jsonify({'message': 'Dates saved successfully.'}), 200
+
 
 def get_dates_in_range(start_date, end_date):
     dates = []
@@ -215,6 +216,7 @@ def get_dates_in_range(start_date, end_date):
         current_date += timedelta(days=1)
     return dates
 
+
 @app.route("/API/enable_ticket", methods=['POST'])
 def enable_ticket():
     code = request.json.get('code')
@@ -222,7 +224,7 @@ def enable_ticket():
     if str(code) not in code_json:
         return jsonify({"success": False, "message": "Code does not exist"})
     else:
-        if code_json[code]["payed"] == False:
+        if not code_json[code]["payed"]:
             code_json[code]["payed"] = True
             write_codes(code_json)
             return jsonify({"success": True, "message": "Successfully marked as payed"}), 200
@@ -310,17 +312,17 @@ def create_ticket():
         valid_date = date.today()
         email = request.form.get("email")
 
-        code[ticket_number] = {"name": None,
+        code[ticket_number] = {"name": None,  # noqa
                                "email": email,
                                "user_count": personcount,
-                               "valid-date": date,
+                               "valid-date": valid_date,
                                "used": False,
                                "payed": False,
                                "last-used": None,
                                "last-payed": date.today()}
         write_codes(code)
 
-        ticket_image_path = generate_ticket(ticket_number)
+        ticket_image_path = generate_ticket(ticket_number) # noqa
         data = {"success": True, "message": "Ticket was created and activated successfully!"}
         return jsonify(data), 200
     except Exception as e:
@@ -337,7 +339,7 @@ def get_tickets():
     name = request.form.get("name")
     email = request.form.get("email")
     personcount = request.form.get("personcount")
-    date = request.form.get("date")
+    date = request.form.get("date") # noqa
 
     code[ticket_number] = {"name": name,
                            "email": email,
@@ -362,7 +364,7 @@ def get_tickets():
     # Fügen Sie den Text zur E-Mail hinzu
     body = (f'Hallo und Herzlich Willkommen {name}!\n\n'
             "Im Anhang befindet sich deine Digitale Zugangskarte, die noch nicht funktioniert!\n"
-            "Um dein Ticket zu aktivieren, musst du dich am Tag der Veranstalltung am Eingan melden.\n\n"
+            "Um dein Ticket zu aktivieren, musst du dich am Tag der Veranstaltung am Eingang melden.\n\n"
             "Mithilfe des QRCodes, der sich in Anhang befindet, kannst du den Saal betreten. "
             "Wir wünschen dir viel spaß bei der Vorstellung!")
     msg.attach(MIMEText(body, 'plain'))

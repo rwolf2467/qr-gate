@@ -58,63 +58,71 @@
             z-index: 9999;
             /* Stacking Context über anderen Inhalten */
         }
+        .overlayafter {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Hintergrundfarbe mit Transparenz */
+            z-index: 9999;
+            /* Stacking Context über anderen Inhalten */
+        }
 
         /* CSS für die Ladeanimation */
         .loader {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            border: 6px solid #f3f3f3;
-            border-top: 6px solid #3498db;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 2s linear infinite;
-            /* Animation */
-            z-index: 10000;
-            /* Über dem Overlay */
+
         }
 
-        @keyframes spin {
-            0% {
-                transform: translate(-50%, -50%) rotate(0deg);
-            }
 
-            100% {
-                transform: translate(-50%, -50%) rotate(360deg);
-            }
-        }
 
-        .success-icon,
-        .error-icon {
-            color: white;
-            font-size: 100px;
+        .success-icon {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
             z-index: 10000;
-            /* Über dem Overlay */
-        }
-
-        .success-icon {
-            color: rgb(3, 146, 3);
-            background-color: #1c1c1c;
         }
 
         .error-icon {
-            color: rgb(185, 3, 3);
-            background-color: #1c1c1c;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+
         }
     </style>
 
 </head>
 
 <body class="is-preload">
-    <div id="overlay" class="overlay">
-        <div class="loader"></div>
+<div id="overlay" class="overlay">
+<div class="loader">
+<lord-icon
+    src="https://cdn.lordicon.com/mgtqmgmg.json"
+    trigger="loop"
+    state="loop-snake-alt"
+    colors="primary:#e4e4e4"
+    style="width:250px;height:250px">
+</lord-icon>
+</div>
+</div>
+</div>
+<div id="overlayafter" class="overlayafter">
+    <div class="loader">
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+        <lord-icon
+            src="https://cdn.lordicon.com/lomfljuq.json"
+            trigger="in"
+            state="in-check"
+            colors="primary:#e4e4e4"
+            style="width:250px;height:250px">
+        </lord-icon>
     </div>
+</div>
     <!-- Wrapper -->
     <div id="wrapper">
 
@@ -160,8 +168,15 @@
             <!-- Work -->
             <article id="tickets">
                 <h2 class="major">Tickets</h2>
-                <span class="image main"><img src="{{ url_for('static', filename='images/pic02.jpg') }}"
-                        alt="Bild"></span>
+                <script src="https://cdn.lordicon.com/lordicon.js"></script>
+                <lord-icon
+                    src="https://cdn.lordicon.com/bqavqyaq.json"
+                    trigger="in"
+                    delay="100"
+                    state="in-ticket"
+                    colors="primary:#e4e4e4,secondary:#e4e4e4"
+                    style="width:250px;height:250px">
+                </lord-icon>
                 <p>Hier kannst du dir Tickets für die nächste Vorstellung reservieren.</p>
                 <form method="post" action="/API/get_tickets">
                     <div class="fields">
@@ -242,6 +257,7 @@
             event.preventDefault();  // Verhindert das Standardverhalten des Formulars
 
             // Zeigen Sie das Overlay mit der Ladeanimation an
+            $('#overlayafter').hide();
             $('#overlay').show();
 
             // Bestimmen Sie den Ziel-Endpunkt basierend auf dem ausgelösten Formular
@@ -270,16 +286,19 @@
                             success: function (data) {
                                 // Verstecken Sie das Overlay nach erfolgreicher Aktion und zeigen Sie das Erfolgs-Icon an
                                 $('#overlay').hide();
-                                $('body').append('<i class="fa fa-check-circle success-icon"></i>');
+                                $('#overlayafter').show();
+
+
                                 alert("Ticket reserviert! Dir wird in kürze eine E-Mail zugesendet!")
                                 // Nach 3 Sekunden die Seite neu laden
                                 setTimeout(function () {
-                                    $('i.error-icon, i.success-icon').remove();
-                                }, 3000);
+                                    $('#overlayafter').hide();
+                                }, 4000);
                             },
                             error: function (xhr, status, error) {
                                 // Verstecken Sie das Overlay
                                 $('#overlay').hide();
+                                $('body').append('<lord-icon src="https://cdn.lordicon.com/lomfljuq.json" trigger="in" delay="0" state="in-cross" colors="primary:#e4e4e4" style="width:250px;height:250px" class="success-icon"/>');
 
                                 // Überprüfen Sie, ob das Fehlerobjekt zusätzliche Informationen enthält
                                 if (xhr.responseJSON) {
@@ -302,6 +321,7 @@
                     console.error('Error: ' + error.message);
                     // Bei einem Fehler das Overlay ausblenden
                     $('#overlay').hide();
+                    $('#overlayafter').hide();
                 });
         });
     });
