@@ -46,5 +46,12 @@ data = {
 with open("static/data/config.qrconf", "w") as config_file:
     config_file.truncate(0)
     json.dump(data, config_file, indent=4)
+    config_file.close()
+
+eventdates = open("static/data/eventdates.qrconf")
+eventdates.close()
+
+shopbarrier = open("static/data/shopbarrier.qrconf")
+shopbarrier.close()
 
 print("Success! All data provided has been successfully saved!")
