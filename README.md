@@ -16,7 +16,7 @@ Qr-Gate, a collaborative masterpiece led by the developer Red_Wolf2467 and skill
 
 - **Intuitive Shop Control in Admin Panel:** Easily customize and control the ticket shop with a user-friendly interface.
 - **Comprehensive Statistics:** Gain valuable insights into ticket sales, usage, and more.
-- **Online Payments with Stripe:** Enable secure online transactions for ticket purchases through the integration of Stripe.
+- **Online Payments with Paysafe:** Enable secure online transactions for ticket purchases through the integration of Paysafe.
 
 ## Meet the Developers 👩‍💻👨‍💻
 
