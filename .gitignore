@@ -162,3 +162,4 @@ private.key
 certificate.crt
 static/data/config.qrconf
 *.qrconf
+codes.json
